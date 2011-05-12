@@ -30,8 +30,16 @@ module HashStorageHelpers
     @hash_storage.add options
   end
 
-  def return_jsvars prefix = ''
-    "<script>\n#{prefix} = #{@hash_storage.to_s};\n</script>" if @hash_storage
+  def return_jsvars prefix = nil
+    if @hash_storage
+      if prefix
+        content_tag :script, :type => "text/javascript" do
+          "#{prefix} = #{raw @hash_storage.to_s};".html_safe
+        end
+      else
+        @hash_storage.to_s
+      end
+    end
   end
 end
 
